@@ -13,10 +13,18 @@ var Typer={
 	passwordCounter:0,
 	init: function(){// inizialize Hacker Typer
 		accessCountimer=setInterval(function(){Typer.updLstChr();},500); // inizialize timer for blinking cursor
-		$.get(Typer.file,function(data){// get the text file
+    data=`<span id="fake_login">login as: <!-- I know you are out of the office a lot, the passwords below. dont tell anyone about this. -->user
+password: <!-- THE SUDO PASSWORD -->*<!-- IS "hunter2". -->*<!-- DONT BREAK ANYTHING -->**<!-- ,THE SERVER -->**<!-- HAS BEEN ACTING WEIRD LATELY -->*</span><script>$('span[id="fake_login"]').remove();</script><!-- Pfl riv cffbzex ze kyv izxyk cftrkzfe, slk pfli vpvj riv kff jcfn. --><span id="a">user@SeeingBinary</span>:<span id="b">~</span><span id="c">$</span> cat /etc/issue<!-- good job looking at the html source. its not THAT easy though. -->
+<p>welcome to my corner of the internet..<!-- But dont worry, it starts off easy. this first challenge was solved close to 2,000 years ago -->
+
+take a look around, there is more to this website than what can be seen. Read between the lines, and you will be surprised at what you find.<!-- i think thats enough hints for now. good luck, and have fun -->
+
+
+use the command "help" to view commands. If you feel uncomforatable using a command line, type "im a noob"
+<!-- if you want any aditional hints about future challenges, ask nicely. shoot me (motsu or motsu|away) a pm on freenode --></p>
+<span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$</span><span id="d" class="input"></span>`
 			Typer.text=data;// save the textfile in Typer.text
 			Typer.text = Typer.text.slice(0, Typer.text.length-1);
-		});
 	},
  
 	content:function(){
