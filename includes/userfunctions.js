@@ -14,8 +14,10 @@ var Typer={
 	init: function(){// inizialize Hacker Typer
 		accessCountimer=setInterval(function(){Typer.updLstChr();},500); // inizialize timer for blinking cursor
 		$.get(Typer.file,function(data){// get the text file
+      console.log({data})
 			Typer.text=data;// save the textfile in Typer.text
-			Typer.text = Typer.text.slice(0, Typer.text.length-1);
+			Typer.text = Typer.text.slice(0, Typer.text.length);
+      console.log(Typer.text)
 		});
 	},
  
@@ -39,7 +41,7 @@ var Typer={
 			
 			var text=Typer.text.substring(0,Typer.index)// parse the text for stripping html enities
 			var rtn= new RegExp("\n", "g"); // newline regex
-	
+	    console.log(JSON.stringify(text))
 			$("#console").html(text.replace(rtn,"<br/>"));// replace newline chars with br, tabs with 4 space and blanks with an html blank
 			
 			if(Typer.index > Typer.text.length)
@@ -94,7 +96,7 @@ if(Typer.stage == 1)
 
 function newCmdLine() //writes a new command line for after input.
 {
-	Typer.write('<span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$</span><span id="d" class="input"></span>');
+	Typer.write('<span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$</span><span id="d" class="input"> </span>');
 }
 
 function newPwLine()
