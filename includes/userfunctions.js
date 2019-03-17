@@ -13,12 +13,15 @@ var Typer={
 	passwordCounter:0,
 	init: function(){// inizialize Hacker Typer
 		accessCountimer=setInterval(function(){Typer.updLstChr();},500); // inizialize timer for blinking cursor
-		$.get(Typer.file,function(data){// get the text file
-      console.log({data})
+let data = `<span id="a">user@SeeingBinary</span>:<span id="b">~</span><span id="c">$  </span> cat /etc/issue
+<p>welcome to my corner of the internet..
+
+take a look around, there is more to this website than what can be seen. Read between the lines, and you will be surprised at what you find.
+
+use the command "help" to view commands. If you feel uncomforatable using a command line, type "im a noob"
+
+<span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$  </span><span id="d" class="input"></span>`
 			Typer.text=data;// save the textfile in Typer.text
-			Typer.text = Typer.text.slice(0, Typer.text.length);
-      console.log(Typer.text)
-		});
 	},
  
 	content:function(){
