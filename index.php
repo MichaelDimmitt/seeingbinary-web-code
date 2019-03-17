@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+	<head> 
+		<title>SeeingBinary</title> 
+
+		<!-- STYLE SHEET: -->
+		<link rel="stylesheet" type="text/css" href="includes/css/console.css">
+		<!--INCLUDES: -->
+		<script type="text/javascript" src="includes/jquery.min.js"></script> 
+		<script type="text/javascript" src="includes/md5.js"></script>
+		<script type="text/javascript" src="includes/html2canvas.js"></script> 
+		<script type="text/javascript" src="includes/glitch.js"></script> 
+		<script type="text/javascript" src="includes/userfunctions.js"></script> <!-- main code of the website. feel free to copy if you give credit! --> 
+	</head>
+	<body> 
+		<div id="console"></div> 
+	</body> 
+</html>
+<!--END DOC-->
