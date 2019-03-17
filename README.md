@@ -15,3 +15,11 @@ coming soon:
   *tab complete on commands and files.
   
   *more hidden stuff (contact me on irc if you are interested in seeing that)
+
+challenges/crypto/crypto5/evenwiththesourcecode.cpp -- c plus plus program
+https://t.co/JnaxESpY8F
+
+challenges/crypto/crypto5/thisisUNBREAKABLE   -- c plus plus executable
+https://t.co/oRHAWgtswH
+
+https://seeingbinary.com/challenges/crypto/crypto5/a7j4Ajufa1oololyoucantwin.txt
