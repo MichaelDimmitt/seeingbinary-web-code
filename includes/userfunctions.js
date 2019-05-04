@@ -13,18 +13,15 @@ var Typer={
 	passwordCounter:0,
 	init: function(){// inizialize Hacker Typer
 		accessCountimer=setInterval(function(){Typer.updLstChr();},500); // inizialize timer for blinking cursor
-    data=`<span id="fake_login">login as: <!-- I know you are out of the office a lot, the passwords below. dont tell anyone about this. -->user
-password: <!-- THE SUDO PASSWORD -->*<!-- IS "hunter2". -->*<!-- DONT BREAK ANYTHING -->**<!-- ,THE SERVER -->**<!-- HAS BEEN ACTING WEIRD LATELY -->*</span><script>$('span[id="fake_login"]').remove();</script><!-- Pfl riv cffbzex ze kyv izxyk cftrkzfe, slk pfli vpvj riv kff jcfn. --><span id="a">user@SeeingBinary</span>:<span id="b">~</span><span id="c">$  </span> cat /etc/issue<!-- good job looking at the html source. its not THAT easy though. -->
-<p>welcome to my corner of the internet..<!-- But dont worry, it starts off easy. this first challenge was solved close to 2,000 years ago -->
+let data = `<span id="a">user@SeeingBinary</span>:<span id="b">~</span><span id="c">$  </span> cat /etc/issue
+<p>welcome to my corner of the internet..
 
-take a look around, there is more to this website than what can be seen. Read between the lines, and you will be surprised at what you find.<!-- i think thats enough hints for now. good luck, and have fun -->
-
+take a look around, there is more to this website than what can be seen. Read between the lines, and you will be surprised at what you find.
 
 use the command "help" to view commands. If you feel uncomforatable using a command line, type "im a noob"
-<!-- if you want any aditional hints about future challenges, ask nicely. shoot me (motsu or motsu|away) a pm on freenode --></p>
+
 <span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$  </span><span id="d" class="input"></span>`
 			Typer.text=data;// save the textfile in Typer.text
-			Typer.text = Typer.text.slice(0, Typer.text.length-1);
 	},
  
 	content:function(){
@@ -47,7 +44,7 @@ use the command "help" to view commands. If you feel uncomforatable using a comm
 			
 			var text=Typer.text.substring(0,Typer.index)// parse the text for stripping html enities
 			var rtn= new RegExp("\n", "g"); // newline regex
-	
+	    console.log(JSON.stringify(text))
 			$("#console").html(text.replace(rtn,"<br/>"));// replace newline chars with br, tabs with 4 space and blanks with an html blank
 			
 			if(Typer.index > Typer.text.length)
@@ -92,10 +89,17 @@ if(Typer.stage == 1)
 }
 
 
-///display functions:
+// Below is all the code for interactive console stuff.
+
+///////////////////////////////////////
+//                                  //
+//        DISPLAY FUNCTIONS        //
+//                                //
+///////////////////////////////////
+
 function newCmdLine() //writes a new command line for after input.
 {
-	Typer.write('<span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$  </span><span id="d" class="input"></span>');
+	Typer.write('<span id="a">user@SeeingBinary</span><span id="d">:</span><span id="b">~</span><span id="c">$</span><span id="d" class="input"> </span>');
 }
 
 function newPwLine()
@@ -119,26 +123,54 @@ function newPwLine()
 	}
 }
 
+
+
+/////////////////////////////////////
+//                                //
+//        COMMAND PARSING        //
+//                              //
+/////////////////////////////////
+
+function cleanArray(actual){
+  var newArray = new Array();
+  for(var i = 0; i<actual.length; i++){
+      if (actual[i]){
+        newArray.push(actual[i]);
+    }
+  }
+  return newArray;
+}
+
 function parseCommand(command) //a large function that parses user commands. might want to clean this up later.
 {
 	///DEFINE FILE FUNCTIONS
 	openProjects = function()
 	{
-		$('span.output').last().text("theres nothing here :(");
-		Typer.write('</br><span id="d" class="output">maybe when im not hacking i can get content on this</span>');
+		$('span.output').last().text("I do both software and hardware projects! from woodworking to robotics...");
+		Typer.write('</br><span id="d" class="output">For software, check out my <a href="https://github.com/motsu35">github</a></span>');
+		Typer.write('</br><span id="d" class="output">I also have some hardware stuff, like tazer gloves and life sized replicas of video</span>');
+		Typer.write('</br><span id="d" class="output">game props, but my old site is broken, so im working on getting that visible :)</span>');
 		Typer.write("</br>");
 	}
 	openAboutme = function()
 	{
-		$('span.output').last().text("im a hacker, yo <3");
+		$('span.output').last().text("Hey, first off thanks for checking out the website.");
+		Typer.write('</br><span id="d" class="output">I\'m currently a student in school that loves programming and computer security.</span>');
+		Typer.write('</br><span id="d" class="output">This website is a side project to keep me busy (and hopefully visitors entertained)</span>');
+		Typer.write('</br><span id="d" class="output">Appart from messing with this site, i program lots of integrated circuts, build robots, </span>');
+		Typer.write('</br><span id="d" class="output">fly quad copters, and hack on computer security challenges. </span>');
+		Typer.write("</br>");
+		Typer.write('</br><span id="d" class="output">Check out my resume for a more formal description of what i do! </span>');
 		Typer.write("</br>");
 	}
-
+	
 	///DEFINE FILE DICTIONARY (if there is a string, it will open the file string in a new tab),else calls function:
 	var files = {};
-	files["projects.xml"] = openProjects;
+	files["projects.txt"] = openProjects;
 	files["resume.pdf"] = "resume.pdf";
 	files["aboutme.txt"] = openAboutme;
+
+
 	////START LARGE IF / ELSE TREE FOR COMMANDS:
 	if(!command) //if they press enter with out a command, just return a new line and do nothing.
 	{
@@ -149,9 +181,9 @@ function parseCommand(command) //a large function that parses user commands. mig
 	Typer.write('</br><span id="d" class="output"></span>'); //we have a command, make our first line of output.
 	
 	
-	if(command.split(" ")[0] == "ls")// command = ls
+	if(cleanArray(command.split(" "))[0] == "ls")// command = ls
 	{
-		if(command.split(" ").length == 1)//no added arguments, just do the basic ls.
+		if(cleanArray(command.split(" ")).length == 1)//no added arguments, just do the basic ls.
 		{
 			Object.keys(files).forEach(function(index) 
 			{ 
@@ -159,9 +191,9 @@ function parseCommand(command) //a large function that parses user commands. mig
 			});
 			Typer.write("</br>");
 		}
-		else if(command.split(" ").length == 2)//theres a second param. handle it.
+		else if(cleanArray(command.split(" ")).length == 2)//theres a second param. handle it.
 		{
-			if(command.split(" ")[1] == "-l")//added long flag, just line split them.
+			if(cleanArray(command.split(" "))[1] == "-l")//added long flag, just line split them.
 			{	
 				Object.keys(files).forEach(function(index) 
 				{ 
@@ -169,7 +201,7 @@ function parseCommand(command) //a large function that parses user commands. mig
 					Typer.write('</br><span id="d" class="output"></span>');
 				});
 			}
-			else if(command.split(" ")[1] == "-a")//add dot files
+			else if(cleanArray(command.split(" "))[1] == "-a")//add dot files
 			{
 				$('span.output').last().text(". .. ");
 				Object.keys(files).forEach(function(index) 
@@ -178,7 +210,7 @@ function parseCommand(command) //a large function that parses user commands. mig
 				});
 				Typer.write("</br>");
 			}
-			else if(command.split(" ")[1] == "-la" || command.split(" ")[1] == "-al")//output list with dot files.
+			else if(cleanArray(command.split(" "))[1] == "-la" || command.split(" ")[1] == "-al")//output list with dot files.
 			{
 				$('span.output').last().text(".");
 				Typer.write('</br><span id="d" class="output">..</span>');
@@ -202,9 +234,9 @@ function parseCommand(command) //a large function that parses user commands. mig
 			Typer.write("</br>");
 		}
 	}
-	else if(command.split(" ")[0] == "clear")//command = clear
+	else if(cleanArray(command.split(" "))[0] == "clear")//command = clear
 	{
-		if(command.split(" ").length == 1)//no params, clear screen.
+		if(cleanArray(command.split(" ")).length == 1)//no params, clear screen.
 		{
 			var myNode = document.getElementById("console");
 			while (myNode.firstChild) 
@@ -220,9 +252,9 @@ function parseCommand(command) //a large function that parses user commands. mig
 	}
 
 
-	else if(command.split(" ")[0] == "help")//command = help
+	else if(cleanArray(command.split(" "))[0] == "help")//command = help
 	{
-		if(command.split(" ").length == 1) //no params, show commands.
+		if(cleanArray(command.split(" ")).length == 1) //no params, show commands.
 		{
 			$('span.output').last().text("Current commands:");
 			Typer.write('</br><span id="d" class="output">&nbsp;&nbsp;&nbsp;ls</span>');
@@ -233,9 +265,9 @@ function parseCommand(command) //a large function that parses user commands. mig
 			Typer.write('</br><span id="d" class="output"> to see command usage, type help &lt;command&gt;.</span>');
 			Typer.write("</br>");
 		}
-		else if(command.split(" ").length == 2) //second arg, someone asking for help on a command.
+		else if(cleanArray(command.split(" ")).length == 2) //second arg, someone asking for help on a command.
 		{
-			if(command.split(" ")[1] == "ls")//show ls usage.
+			if(cleanArray(command.split(" "))[1] == "ls")//show ls usage.
 			{
 				$('span.output').last().text("ls usage:");
 				Typer.write('</br><span id="d" class="output">ls &lt;-flags&gt; | lists current directory contents.</span>');
@@ -244,26 +276,26 @@ function parseCommand(command) //a large function that parses user commands. mig
 				Typer.write('</br><span id="d" class="output">&nbsp;&nbsp;&nbsp;&nbsp;l - list files on new lines.</span>');
 				Typer.write("</br>");
 			}
-			else if(command.split(" ")[1] == "clear")//show clear usage
+			else if(cleanArray(command.split(" "))[1] == "clear")//show clear usage
 			{
 				$('span.output').last().text("clear | clears current screen.");
 				Typer.write('</br><span id="d" class="output">&nbsp;&nbsp;clear takes no parameters.</span>');
 				Typer.write("</br>");
 			}
-			else if(command.split(" ")[1] == "help")//show help usage
+			else if(cleanArray(command.split(" "))[1] == "help")//show help usage
 			{
 				$('span.output').last().text("help usage:");
 				Typer.write('</br><span id="d" class="output">help &lt;command&gt; | shows usage for command, if specified. otherwise shows avalible commands.</span>');
 				Typer.write("</br>");
 			}
-			else if(command.split(" ")[1] == "open" || command.split(" ")[1] == "cat" )//show open usage
+			else if(cleanArray(command.split(" "))[1] == "open" || command.split(" ")[1] == "cat" )//show open usage
 			{
 				$('span.output').last().text("open [file | url]| opens file or url.");
 				Typer.write('</br><span id="d" class="output"></span>');
 				Typer.write('</br><span id="d" class="output">&nbsp;&nbsp;note:url MUST begin with http or https.</span>');
 				Typer.write("</br>");
 			}
-			else if(command.split(" ")[1] == "su")//show open usage
+			else if(cleanArray(command.split(" "))[1] == "su")//show open usage
 			{
 				$('span.output').last().text("su [user]| substitute user identity");
 				Typer.write('</br><span id="d" class="output">&nbsp;&nbsp;Use su to switch user accounts. su takes in a user name, and then prompts for a password.</span>');
@@ -283,28 +315,28 @@ function parseCommand(command) //a large function that parses user commands. mig
 	}
 	
 	
-	else if(command.split(" ")[0] == "open" || command.split(" ")[0] == "cat")//command = open
+	else if(cleanArray(command.split(" "))[0] == "open" || command.split(" ")[0] == "cat")//command = open
 	{
-		if(command.split(" ").length == 1)//nothing to open. error that shit!
+		if(cleanArray(command.split(" ")).length == 1)//nothing to open. error that shit!
 		{
 			$('span.output').last().text("Error: open: enter a file or url to open.");
 			Typer.write("</br>");
 		}
-		else if(command.split(" ").length == 2)//ah, just right... lets process the url or file
+		else if(cleanArray(command.split(" ")).length == 2)//ah, just right... lets process the url or file
 		{
-			if(command.split(" ")[1].split("://")[0] == "http" || command.split(" ")[1].split("://")[0] == "https")//url found, redirect there
+			if(cleanArray(command.split(" "))[1].split("://")[0] == "http" || command.split(" ")[1].split("://")[0] == "https")//url found, redirect there
 			{
-				window.location = command.split(" ")[1];
+				window.location = cleanArray(command.split(" "))[1];
 			}
-			else if(files.hasOwnProperty(command.split(" ")[1]))//open the file
+			else if(files.hasOwnProperty(cleanArray(command.split(" "))[1]))//open the file
 			{
-				if(typeof files[command.split(" ")[1]] === "string")
+				if(typeof files[cleanArray(command.split(" "))[1]] === "string")
 				{
-					window.open(files[command.split(" ")[1]],'_blank');
+					window.open(files[cleanArray(command.split(" "))[1]],'_blank');
 				}
 				else
 				{
-					files[command.split(" ")[1]](); //call the function in the object array.
+					files[cleanArray(command.split(" "))[1]](); //call the function in the object array.
 				}
 			}
 			else
@@ -316,20 +348,20 @@ function parseCommand(command) //a large function that parses user commands. mig
 		else//too many args
 		{
 			$('span.output').last().text("Error: open: too many arguments for open. use help open for more info.");
-			Typer.write("</br>");
+			Typer.write("</br><!-- " + cleanArray(command.split(" ")).length + "-->");
 		}
 	}
 	
-	else if(command.split(" ")[0] == "su")
+	else if(cleanArray(command.split(" "))[0] == "su")
 	{
-		if(command.split(" ").length == 1)
+		if(cleanArray(command.split(" ")).length == 1)
 		{
 			$('span.output').last().text("Error: su: not enough arguments for su. use help su for more info.");
 			Typer.write("</br>");
 		}
-		else if(command.split(" ").length == 2)
+		else if(cleanArray(command.split(" ")).length == 2)
 		{
-			if(command.split(" ")[1] == "root")
+			if(cleanArray(command.split(" "))[1] == "root")
 			{
 				Typer.askingpw = 1;
 			}
@@ -353,12 +385,22 @@ function parseCommand(command) //a large function that parses user commands. mig
 	
 	else//command isnt found
 	{
-		$('span.output').last().text("-bash: "+command.split(" ")[0]+": command not found. type help for a list of commands");
+		$('span.output').last().text("-bash: "+cleanArray(command.split(" "))[0]+": command not found. type help for a list of commands");
 		Typer.write("</br>");
 	}
 
 	return false;
 }
+
+
+
+
+//////////////////////////////////////
+//                                 //
+//        KEYPRESS HANDLER        //
+//                               //
+//////////////////////////////////
+
 
 //backspace keypress handler.
 $(document).on("keydown", function (e)
